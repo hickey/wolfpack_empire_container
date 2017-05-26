@@ -123,8 +123,28 @@ case $1 in
   empserver)
     set -- /empire/sbin/emp_server
     ;;
-  help|info|readme)
+  readme)
     set -- cat README.md
+    ;;
+  info)
+    cd /empire/share/empire/info.nr
+    topic=$2
+    echo "topic=$topic"
+    if [[ -z "$topic" ]]; then
+      set -- cat TOP
+    elif [[ "$topic" == "topics" ]]; then
+      set -- ls
+    else
+      files=( $(ls -1 ${topic}*) )
+      echo "files=${files[@]}"
+      num=${#files[@]}
+      echo "num=$num"
+      if [[ "$num" == 1 ]]; then
+        set -- cat ${files[0]}
+      else
+        set -- echo ${files[@]}
+      fi
+    fi
     ;;
   version|ver)
     set -- /empire/sbin/emp_server -v
@@ -138,7 +158,6 @@ for conf in "${files_to_process[@]}"; do
   echo "+ Processing $conf"
   generate_config "$conf" "$delimiter"
 done
-
 
 #echo "Executing: $@"
 exec "$@"

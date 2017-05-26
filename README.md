@@ -1,5 +1,8 @@
-# wolfpack_empire_container
-Docker container for running an Wolfpack Empire server
+Wolfpack Empire Docker Container
+================================
+Docker container for running an Wolfpack Empire server with terminal
+based clients. More information about Wolfpack Empire can be found at 
+http://wolfpackempire.com/
 
 
 empire
