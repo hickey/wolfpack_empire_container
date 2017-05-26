@@ -113,15 +113,23 @@ function generate_config {
 }
 
 
-    echo "args=${@}"
 # Default application if nothing is specified
 if [ -z "${1:0:1}" ]; then
 	set -- "empserver"
 fi
 
 case $1 in
-  empserver|emp_server)
-    set -- /empire/sbin/emp_server
+  empserver|emp_server|server)
+    set -- /empire/sbin/emp_server -d
+    ;;
+  empire|client)
+    set -- /empire/bin/empire ${@:2}
+    ;;
+  pei|pei2)
+    set -- /empire/bin/pei ${@:2}
+    ;;
+  pei3)
+    set -- /empire/bin/pei3 ${@:2}
     ;;
   readme)
     set -- cat README.md
@@ -157,6 +165,9 @@ case $1 in
     ;;
   create-world)
     cd /empire
+    if [ ! -f etc/empire/econfig -a ! -f etc/empire/schedule ]; then
+      cp etc/empire-dist/* etc/empire/
+    fi
     /empire/sbin/files -f
     /empire/sbin/fairland ${@:2}
     /empire/sbin/emp_server
@@ -178,4 +189,5 @@ for conf in "${files_to_process[@]}"; do
 done
 
 #echo "Executing: $@"
+export PATH=/empire/bin:/empire/sbin:$PATH
 exec "$@"

@@ -1,7 +1,7 @@
 Wolfpack Empire Docker Container
 ================================
 Docker container for running an Wolfpack Empire server with terminal
-based clients. More information about Wolfpack Empire can be found at 
+based clients. More information about Wolfpack Empire can be found at
 http://wolfpackempire.com/
 
 
@@ -19,7 +19,7 @@ updates [num]
 create-world <args for fairland>
 
 
-s
+
 empire
 ------
 ```
