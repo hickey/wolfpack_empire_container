@@ -16,7 +16,8 @@ RUN set -x && apt-get update && apt-get upgrade -y && \
     cd ../pei2 && make && mv example.peirc /empire && mv INSTALL /empire/README.pei2 && \
     mv pei highlight *.pl help.* /empire/bin && \
     cd ../pei3 && mv pei3 /empire/bin && mv example.pei3rc /empire && \
-    mv README /empire/README.pei3 && rm -rf /tmp/empire_clients
+    mv README /empire/README.pei3 && rm -rf /tmp/empire_clients && \
+    chown -R deity:empire /empire
     #cd ../eif && ./configure --prefix /empire && CFLAGS='-Wdeprecated-declarations' make install && \
 
 ADD README.md /empire

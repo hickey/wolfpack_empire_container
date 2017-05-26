@@ -113,14 +113,14 @@ function generate_config {
 }
 
 
-
+    echo "args=${@}"
 # Default application if nothing is specified
 if [ -z "${1:0:1}" ]; then
 	set -- "empserver"
 fi
 
 case $1 in
-  empserver)
+  empserver|emp_server)
     set -- /empire/sbin/emp_server
     ;;
   readme)
@@ -129,16 +129,13 @@ case $1 in
   info)
     cd /empire/share/empire/info.nr
     topic=$2
-    echo "topic=$topic"
     if [[ -z "$topic" ]]; then
       set -- cat TOP
     elif [[ "$topic" == "topics" ]]; then
       set -- ls
     else
       files=( $(ls -1 ${topic}*) )
-      echo "files=${files[@]}"
       num=${#files[@]}
-      echo "num=$num"
       if [[ "$num" == 1 ]]; then
         set -- cat ${files[0]}
       else
@@ -146,8 +143,29 @@ case $1 in
       fi
     fi
     ;;
+  man)
+    cd /empire/share/man/man6
+    topic=$2
+    if [[ -z "$topic" ]]; then
+      set -- ls
+    else
+      set -- nroff -man ${topic}*
+    fi
+    ;;
+  updates)
+    set -- /empire/sbin/empsched -n ${2:-16}
+    ;;
+  create-world)
+    cd /empire
+    /empire/sbin/files -f
+    /empire/sbin/fairland ${@:2}
+    /empire/sbin/emp_server
+    /empire/bin/empire POGO peter < newcap_script
+    exit 0
+    ;;
   version|ver)
     set -- /empire/sbin/emp_server -v
+    ;;
 esac
 
 # Process any config files. This should really only happen when the 

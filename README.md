@@ -5,6 +5,21 @@ based clients. More information about Wolfpack Empire can be found at
 http://wolfpackempire.com/
 
 
+Commands
+--------
+
+info, info topics, info <term>
+
+readme
+
+man <term>
+
+updates [num]
+
+create-world <args for fairland>
+
+
+s
 empire
 ------
 ```
