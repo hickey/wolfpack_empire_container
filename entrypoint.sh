@@ -14,13 +14,6 @@ declare -rx SCRIPT=${0##*/}
 #         *string*:                Variable must validate as a non-integer
 #         *ip*:                    Variable must contain an IP
 
-# Consumer
-default_ZK_CONNECT=''
-
-  
-# Logging
-default_LOG_LEVEL=WARN
-
 
 # Command line parameters
 
@@ -118,6 +111,12 @@ if [ -z "${1:0:1}" ]; then
 	set -- "empserver"
 fi
 
+# Check for config files and supply default ones if needed
+cd /empire
+if [ ! -f etc/empire/econfig -a ! -f etc/empire/schedule ]; then
+  cp etc/empire-dist/* etc/empire/
+fi
+
 case $1 in
   empserver|emp_server|server)
     set -- /empire/sbin/emp_server -d
@@ -164,10 +163,6 @@ case $1 in
     set -- /empire/sbin/empsched -n ${2:-16}
     ;;
   create-world)
-    cd /empire
-    if [ ! -f etc/empire/econfig -a ! -f etc/empire/schedule ]; then
-      cp etc/empire-dist/* etc/empire/
-    fi
     /empire/sbin/files -f
     /empire/sbin/fairland ${@:2}
     /empire/sbin/emp_server
